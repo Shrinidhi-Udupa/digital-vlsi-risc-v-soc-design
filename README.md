@@ -25,3 +25,39 @@ Peripherals: Surrounding the core are various functional blocks, including a GPI
 Pads: The chip's outer perimeter is lined with pads, the physical connection points for power supply (VDD), ground (VSS), clock signals (CLK), and data transfer (e.g., flash_io, ser_tx, ser_rx).
 
 Foundry IP's and Macros: While not visually distinct in this image, the chip likely incorporates pre-designed building blocks from the foundry and custom-designed macros to enhance its functionality.
+
+# Introduction to RISC V
+
+<img width="1459" alt="354796556-ed8c3d00-53db-4062-9b08-e20bef811971" src="https://github.com/user-attachments/assets/d074b903-9d1c-4fc4-927f-0ebe241df8db">
+
+The image provides a snapshot of the RISC-V development process. On the left, a code editor displays C code implementing a "swap" function, which will be compiled into machine code. The middle section shows the assembly code generated for the "swap" function, revealing the RISC-V instructions used. On the right, a block diagram outlines the architecture of a potential RISC-V implementation, the "picorv32" core, detailing its components and control logic. The image underscores the relationship between high-level code, assembly language, and the underlying hardware architecture in the context of RISC-V.
+
+<img width="1458" alt="354797154-3d986af3-f230-4935-b941-1e3a9d6d2dfd" src="https://github.com/user-attachments/assets/a3f2c8c6-e078-46d8-a59a-a96a24cc46b1">
+
+The image illustrates the design flow from high-level software instructions to physical hardware implementation in a RISC-V processor. Starting with assembly code representing an "add" instruction, the assembler converts it into machine code. This machine code, representing the Instruction Set Architecture (ISA), serves as an abstract interface to the hardware. The RTL (Register Transfer Level) code, written in a hardware description language, defines the logic for processing these instructions. This RTL is then synthesized into a netlist, a detailed description of the circuit's components and connections. Finally, the physical design implementation translates the netlist into a layout of transistors and wires on a silicon chip, creating the actual hardware capable of executing the original "add" instruction. 
+
+# SoC design and OpenLANE
+
+Introduction to all components of open-source digital asic design
+
+<img width="1411" alt="354802750-aca4a2b1-0974-4a30-b7ff-d4018d504f54" src="https://github.com/user-attachments/assets/7c75462a-13c3-4eb7-a81b-677640c73e5a">
+
+
+1. EDA Tools:
+
+qflow: This is the overall flow manager orchestrating the entire design process. It handles task scheduling, resource allocation, and data management. OpenROAD: A comprehensive tool suite covering various design stages, including synthesis, placement, and routing. It optimizes the chip layout for performance and power efficiency. OpenLANE: A complete flow for digital ASIC implementation, encompassing tasks like synthesis, physical design, and sign-off. It provides a streamlined approach to the design process.
+
+2. RTL Designs:
+
+These are the initial designs written in hardware description languages like Verilog or VHDL. They capture the chip's functionality at a high level. librecores.org, opencores.org, and github.com: These platforms offer a rich repository of open-source RTL designs for various components, accelerating the design process.
+
+3. PDK Data:
+
+Process Design Kit (PDK): This essential data package provides detailed information about the manufacturing process, including transistor models, design rules, and library cells. Google Skywater PDK: A prominent open-source PDK for a 130nm process, enabling the fabrication of chips through Skywater Technology Foundry.
+
+
+
+
+
+
+
