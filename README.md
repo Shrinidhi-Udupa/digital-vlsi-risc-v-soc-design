@@ -207,7 +207,8 @@ Viewing Library Files:
 
 To enter into bash while being in the openalne dircetory use the command
 
-*** docker
+*** 
+docker
 ***
 
 
