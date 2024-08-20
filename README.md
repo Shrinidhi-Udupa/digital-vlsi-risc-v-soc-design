@@ -210,14 +210,187 @@ To enter into bash while being in the openalne dircetory use the command
 *** 
 docker
 ***
+Now after this we use the script 'flow.tcl' and alongwith it use '-interactive' for the step by step openlane flow. :
+***
+./flow.tcl -interactive
+***
+![Screenshot 2024-07-13 160109](https://github.com/user-attachments/assets/c87a942c-bd0a-447c-9958-0aad7e2cc066)
+Openlane Logo can be seen in the terminal which is affirmative , after this enter the following command to install require openlane packages
+***
+% package require openlane 0.9
+***
+Now, Ther are various pre-built designs in the 'designs' subdirectory. So, here we are selecting the "picorv32a.v" design on which we will execute the RTL to GDS flow. To carry out the synthesis (the project's initial stage) on this design, we first need to set it up using the command:
+***
+prep -design picorv32a
+run_synthesis
+***
+![Screenshot 2024-07-13 162118](https://github.com/user-attachments/assets/84b6b5a1-f243-45e4-841f-fe2dea463e17)
+After the preparation is complete, we can see a new directory with todays date is created within 'runs' folder in 'picorv32a' folder.
+
+### Key Sections and Variables:
+Design Setup:
+
+1. Design
+***
+set ::env(DESIGN_NAME) "picorv32a"
+set ::env(VERILOG_FILES)  "~/designs/picorv32a/src/picorv32a.v" 
+set ::env(SDC_FILE) "~/designs/picorv32a/src/picorv32a.sdc"
+***
+DESIGN_NAME: Sets the design's name to picorv32a.
+
+VERILOG_FILES: Specifies the path to the Verilog file containing the picorv32a design.
+
+SDC_FILE: Indicates the path to the Synopsys Design Constraints (SDC) file, which contains timing constraints for the design.
+
+2. Clock Configuration:
+***
+ set ::env(CLOCK_PERIOD)  "5.000"
+ set ::env(CLOCK_PORT) "clk"
+ set ::env(CLOCK_NET)  $::env(CLOCK_PORT)
+***
+ CLOCK_PERIOD: Defines the desired clock period for the design as 5 nanoseconds.
+
+CLOCK_PORT: Sets the name of the clock input port to clk.
+
+CLOCK_NET: Assigns the clock net to be the same as the clock port.
+
+3. Configuration File Inclusion:
+***
+ set filename $::env(OPENLANE_ROOT)/designs/$::env(DESIGN_NAME)/$::env(PDK)/$::env(STD_CELL_LIBRARY)_config.tcl 
+   if {[file exists $filename] == 1} {
+     source $filename
+       }
+***
+This section constructs a filename based on environment variables to include a technology-specific configuration file.
+
+It sources (includes) this file if it exists, potentially containing PDK-specific settings.
+![Screenshot 2024-07-13 160719](https://github.com/user-attachments/assets/b717398c-b384-4883-8263-e439bf6bb233)
+
+4. Standard Cell Library (SCL) Configurations:
+
+SCL Configs
+***
+set ::env(GLB_RT_ADJUSTMENT) 0.1
+set ::env(SYNTH_MAX_FANOUT) 6
+set ::env(CLOCK_PERIOD) "24.73"
+set ::env(FP_CORE_UTIL) 35
+set ::env(PL_TARGET_DENSITY) [ expr ($::env(FP_CORE_UTIL)+5) / 100.0 ]
+***
+This part defines various configuration parameters for the standard cell library being used:
+
+GLB_RT_ADJUSTMENT: Global routing tree adjustment.
+
+SYNTH_MAX_FANOUT: Maximum fanout allowed during synthesis.
+
+CLOCK_PERIOD: Overwrites the previous clock period setting.
+
+FP_CORE_UTIL: Specifies core utilization for floorplanning.
+
+PL_TARGET_DENSITY: Sets the target density for placement.
+
+![Screenshot 2024-07-13 161133](https://github.com/user-attachments/assets/8f280309-dcfd-4d43-9a9b-787db2f8459f)
+
+## SK3 - Lecture3
+### Inside an OpenLANE Design: Directory Structure and PDK Integration:
+
+Screenshot 1 (Directory Structure):
+
+The user navigates to a specific design directory within an OpenLANE project: .../openlane/designs/picorv32a/runs/13-07_10-49
+
+Key Subdirectories:
+
+PDK_SOURCES: Contains links or copies of files directly from the Skywater PDK.
+
+results: Stores the output files generated during various stages of the OpenLANE flow. Further subdirectories like synthesis, placement, routing, lvs indicate where results for each stage are stored.
+
+logs: Contains log files capturing the execution details of each step.
+
+config.tcl: This crucial file likely holds design-specific configurations and settings for OpenLANE tools.
 
 
+Screenshot 2 (PDK License):
 
+Shows the contents of the merged.lef file within the PDK_SOURCES directory.The header clearly states that it's part of the Skywater PDK and released under the Apache License 2.0.This file likely contains Library Exchange Format (LEF) data, providing physical layout information about the standard cells within the PDK.
 
+Screenshot 3 (Design Configuration):
 
+Displays a snippet of the run.cfg file, a primary configuration file for OpenLANE.
 
+PDK Integration: set ::env(PDK_ROOT) ...: Sets the root directory of the Skywater PDK, allowing OpenLANE tools to access its contents.
 
+Design-Specific Settings:
 
+Specifies various paths to design files (SDC, LEF), clock parameters, cell padding/exclusion rules, and more. It demonstrates how OpenLANE allows for fine-grained control over the ASIC design flow through Tcl configuration.
+
+## SK3 - Lecture4
+### OpenLANE Git: Your Gateway to Open-Source ASIC Design
+
+Key Repositories:
+
+    Main OpenLANE Repository:
+
+     URL: https://github.com/The-OpenROAD-Project/OpenLANE
+
+This is the central hub for OpenLANE, containing the core infrastructure, scripts, flow configurations, and documentation.
+
+    Skywater PDK (Sky130):
+
+     URL: https://github.com/google/skywater-pdk
+
+This repository hosts the Google-sponsored Skywater 130nm Process Design Kit (PDK), often used with OpenLANE.
+
+Other PDK Repositories: You can find PDKs from other foundries on GitHub or other platforms.
+
+Common Git Commands for OpenLANE:
+
+git clone: Download a copy of the OpenLANE or PDK repository to your local machine.
+
+git pull: Update your local repository with the latest changes from the remote repository.
+
+git checkout: Switch between different branches or versions of the code.
+
+git diff: View the changes you've made to files.
+
+git add, git commit, git push: Stage, commit, and push your changes to a remote repository (e.g., on GitHub).
+
+## SK3 - Lecture5
+### OpenLANE Results Analysis: Cell Counts/Flop calculation and Directory Exploration
+
+Screenshot 1 (Directory Navigation and Files):
+
+Results Directory: The user navigates to the synthesis subdirectory within the OpenLANE run's results folder: .../openlane/designs/picorv32a/runs/13-07_13-33/results/synthesis.
+
+Key Files: merged_unpadded.lef: This Library Exchange Format (LEF) file likely contains the physical layout information for the standard cells used in the design, potentially after merging multiple libraries.
+
+picorv32a.synthesis.v: Represents the synthesized netlist of the picorv32a design in Verilog format. This netlist is the output of the synthesis stage, mapping the original RTL design to the chosen standard cells.
+
+![Screenshot 2024-07-13 191251](https://github.com/user-attachments/assets/7dd9afa1-4a27-4302-8a87-35112e1cc0df)
+
+Screenshot 2 (Design Statistics):
+
+Cell Counts: The output highlights the count of different standard cells used in the design, grouped by cell type (e.g., sky130_fd_sc_hd_a211o_2, sky130_fd_sc_hd_a21bo_2).
+
+Area Estimation: Different cells have varying sizes, so cell counts provide an initial estimate of the design's area.
+Performance Analysis: Cell complexity influences timing characteristics; analyzing cell types helps understand potential performance bottlenecks.
+
+Now, coming back to the step where design preperation was completed successfully. Now, To perform synthesis on the design use the following command :
+
+  % run_synthesis
+
+Now, First objective after the synthesis is completed is to calculate the Flip Flop Ratio.
+
+Now, if we see the synthesized results we find:
+
+Number of D Flipflops : 1613
+Total number of Cells : 14876
+![Screenshot 2024-07-13 191025](https://github.com/user-attachments/assets/4f78a401-8033-43fa-8b90-3de7b3d0482d)
+
+FF Ratio : 0.1084
+FF Percentage : 10.84 %
+
+Hence, flip flop ratio = (Number of D Flipflops)/(Total number of Cells) Flipflop percentage = FF ratio * 100
+
+## DAY-2
 
 
 
