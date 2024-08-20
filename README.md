@@ -202,6 +202,11 @@ Viewing Library Files:
         Enter cd libs.tech to move to the directory containing files specific to the OpenLANE tools themselves.
         Finally, use ls -ltr again to list all files in libs.tech.
 
+### SK3 - Lecture2
+#### Design Preparation Step
 
+To enter into bash while being in the openalne dircetory use the command
 
-
+***
+        docker
+***
