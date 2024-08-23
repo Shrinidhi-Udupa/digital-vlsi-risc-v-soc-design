@@ -392,6 +392,280 @@ Hence, flip flop ratio = (Number of D Flipflops)/(Total number of Cells) Flipflo
 
 ## DAY-2
 
+### SK1- Lecture1
+Understanding Chip Area, Core, Die, and Utilization Factor
+
+This series of diagrams provides a visual explanation of key concepts related to chip design, focusing on the core, die, utilization factor, and aspect ratio.
+Slide 1: Determining Core Dimensions and Utilization
+
+1. Explains that the core's dimensions are determined by the placement of all logic cells within it.
+
+2. 100% utilization occurs when all logic cells completely fill the core area.
+
+3. The utilization factor is calculated by comparing the area occupied by cells to the total core area.
+
+![Screenshot 2024-07-14 185039](https://github.com/user-attachments/assets/6f681647-218a-4419-979f-5ad44e8a5168)
+
+OpenLANE Configuration and Execution: Defining Variables and Observing the Flow
+
+Screenshot 1 (Configuration Variables):
+
+Configuration File (config.tcl): This snippet showcases a portion of OpenLANE's configuration file where essential design parameters are defined.
+
+Required Variables: It highlights "required variables" crucial for a successful run.
+
+    DESIGN_NAME: Specifies the top-level module name of your design.
+
+    VERILOG_FILES: Provides the path(s) to your Verilog design files.
+
+    CLOCK_PERIOD: Defines the clock period in nanoseconds.
+
+    CLOCK_NET and CLOCK_PORT: Specify clock-related information used in different stages (CTS, STA).
+
+![Screenshot 2024-07-15 161206](https://github.com/user-attachments/assets/567c9ecf-c182-4325-b524-3974a816255b)
+
+Screenshot 2 (Configuration Directory):
+
+OpenLANE Configuration Directory: Shows the contents of OpenLANE's configuration directory.
+
+Tcl Scripts for Different Stages: The directory contains individual Tcl scripts (synthesis.tcl, placement.tcl, routing.tcl, etc.) that define the flow for each design stage.
+
+![Screenshot 2024-07-15 161414](https://github.com/user-attachments/assets/5e57b86f-51e0-4ced-9728-804e7257021e)
+
+OpenLANE Design Flow: Navigating Directories, Examining Floorplan Data, and Visualizing Layout
+
+Screenshot 1-2 (Project Directory Exploration):
+
+The user navigates through various directories within an OpenLANE project, ultimately reaching:
+
+A specific run directory:
+
+          .../openlane/designs/picorv32a/runs/15-07_10-57
+
+The results/floorplan subdirectory containing output files from the floorplanning stage.
+
+Key Subdirectories:
+
+1. PDK_SOURCES: Holds links to the Skywater PDK files used in the design.
+2. results: Stores outputs from different stages (e.g., synthesis, floorplan, routing).
+3. logs: Contains log files for each stage's execution.
+
+![Screenshot 2024-07-15 163108](https://github.com/user-attachments/assets/43dae03c-a73c-4e53-b6fc-128ecabf1021)
+
+Key Information:
+
+VERSION: DEF file version.
+DESIGN: The name of the design (picorv32a).
+DIEAREA: Specifies the dimensions of the chip's die area.
+ROW: Defines the rows available for placing standard cells, with their coordinates, orientation, and spacing.
+
+![Screenshot 2024-07-15 163748](https://github.com/user-attachments/assets/13d06a8b-cfc1-4fb9-81ff-8990224ca7b2)
+
+Calculator to convert the die area dimensions from the DEF file (6606685 x 671405) into units representing microns.
+
+![Screenshot 2024-07-15 163857](https://github.com/user-attachments/assets/7ad50da1-e380-4fdd-9af3-e6c08107b048)
+
+The floorplan is visualized using a layout viewer tool (possibly klayout).
+
+Key Observations:
+
+1. Die Area: The overall rectangular area represents the chip die.
+2. Rows: The repeating vertical lines likely represent the rows defined in the DEF file for cell placement.
+3. Pre-Placed Blocks: There might be (though not clearly visible in this screenshot) rectangular areas representing pre-placed blocks like memories or macro cells.
+
+![Screenshot 2024-07-15 164728](https://github.com/user-attachments/assets/80a9dab6-f50e-4330-ad3c-5ebb921002b3)
+
+Exploring Standard Cell Details in a Layout Viewer
+
+Screenshot 1 (Standard Cell Properties):
+
+1. Layout Viewer: The main window displays a section of the ASIC layout.
+2. Tcl Console: The console provides a command-line interface for interacting with the layout data.
+3. Cell Details: The user has likely selected a standard cell, triggering the display of its properties:
+4. Name: The cell is identified as pcpi.
+5. Size: It occupies an area of 8.018 microns x 8.018 microns.
+6. Layers: Information about metal layers (Metal1, Metal2) and their connections to the pcpi cell's pins.
+7. Label Attachment: It shows specific labels ("pcpi_rd/I1") are associated with metal connections to this cell instance.
+
+![Screenshot 2024-07-15 165243](https://github.com/user-attachments/assets/e041901d-f2ed-4c95-aa75-b21b041eafad)
+
+Purpose:
+
+Standard Cell Structure: Examining the pcpi cell's physical layout, including its size and connections to different metal layers.
+
+Label Verification: Confirming the correct association of labels (e.g., "pcpi_rd/I1") with specific metal traces connected to the pcpi cell.
+
+Connectivity Analysis: Understanding how this cell is connected to the surrounding circuitry through the labeled metal traces.
+
+### OpenLANE Design Flow: Placement Statistics, Directory Organization, and Visualization
+
+Screenshot 1 (Placement Statistics):
+
+    Log Messages: The terminal window displays log messages from the OpenLANE run, providing statistics about the placement process:
+    Design Area: Total area, utilized area, and utilization percentage.
+    Cell Counts: Numbers of different cell instances and total instances.
+    Placement Metrics: Data related to cell displacement, wirelength, and HPWL (Half-Perimeter Wirelength), which are indicators of placement quality.
+
+run_placement
+
+![Screenshot 2024-07-15 175722](https://github.com/user-attachments/assets/7a7b96ec-78fb-44dc-a7e2-e657d91995d6)
+
+ The user navigates through the OpenLANE project directory, highlighting the placement subdirectory within a specific run's results folder (.../openlane/designs/picorv32a/runs/15-07_12-25/results/placement). Purpose: This navigation indicates that the placement results, including placement data and log files, are organized by design and run within the results directory.
+
+ picorv32a.placement.def
+
+the above file contains the info about placement.
+
+Placement Display: A layout viewer (tkcon) visualizes the placement of standard cells within the picorv32a design. Cell Instances: Individual standard cells are likely represented by rectangles or other shapes, but their specific details are not clearly visible in this screenshot. Console Output: The console window suggests that the viewer is loading the design's netlist and technology information for accurate visualization.
+
+navigate to tool by the following command:
+
+magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech lef read ../../tmp/merged.lef def read picorv32a.floorplan.def &
+
+![Screenshot 2024-07-15 181533](https://github.com/user-attachments/assets/012f3209-3068-4991-8f87-73fa01abf715)
+
+A zoomed-in view of the layout after placement is presented, showing: Standard Cells: The rectangles likely represent individual standard cell instances placed on the layout. Labels: Some cells have labels indicating their types or functions (e.g., _19458, _19321). Routing Tracks: Faint lines in the background might represent the available routing tracks for interconnecting the cells.
+
+![Screenshot 2024-07-15 182128](https://github.com/user-attachments/assets/873dbfe4-33ba-4b00-99a8-cc7aecaf0ce4)
+
+for more controls use these commands:
+
+# Design Alignment Instructions
+
+## Centering the Design
+
+1. Press `S` to select the entire design.
+2. Press `V` to vertically align it to the middle of the screen.
+
+## Zooming In on a Specific Area
+
+1. Left-click and drag to select the desired region.
+2. Right-click to bring up the context menu.
+3. Press `Z` to zoom in on the selected area.
+
+## Getting Details of a Cell
+
+1. Move your cursor to the cell of interest.
+2. Press `S` to select the cell.
+3. In the `tkcon` window, enter the command `what` to display cell details.
+
+# Day 3
+
+Configuring Parameters and Visualizing Results
+
+This set of screenshots demonstrates how floorplanning parameters can be customized in OpenLANE using Tcl variables and how the resulting floorplan is visualized for a picorv32a design.
+
+Screenshot 1 (Floorplan Configuration):
+
+Tcl Variables: Shows a section of a Tcl configuration file (config.tcl or similar) dedicated to floorplanning settings.
+
+Key Parameters:
+
+    FP_IO_VMETAL, FP_IO_HMETAL: Specify metal layers for vertical and horizontal IO connections.
+    FP_SIZING, FP_CORE_UTIL, FP_ASPECT_RATIO: Control overall floorplan sizing, core utilization, and aspect ratio.
+    FP_PDN_* variables: Define parameters related to the power distribution network (PDN) like offsets, pitches, and adjustments.
+    FP_IO_MODE, FP_IO_HLENGTH, etc.: Configure input/output (IO) placement parameters.
+
+![Screenshot 2024-07-15 192134](https://github.com/user-attachments/assets/36d67eb3-daa9-4118-935a-633bd47f97e2)
+
+OpenLANE Log: The terminal displays log messages from an OpenLANE run.
+
+Floorplan Execution: Highlights the execution of therun_floorplan, indicating the start of the floorplanning stage.
+
+Layout Visualization: Shows OpenLANE invoking a layout viewer (klayout in this case) to display the generated floorplan.
+
+set  ::env(FP_IO_MODE) 2
+run_floorplan
+
+![Screenshot 2024-07-15 192348](https://github.com/user-attachments/assets/5023d463-f388-4720-af16-83ce6e1584ee)
+
+Floorplan Visualization:
+
+1. Layout Viewer Display: Presents the visualized floorplan within the layout viewer.
+2. Core Area: A central rectangular area represents the core of the design where standard cells are placed.
+3. IO Pads: There might be regions around the core dedicated to IO pads for external connections.
+4. Power Grid: A grid-like structure might be visible, indicating the power distribution network.
+
+Here the IO Pin arrangement is changed now to 2 previouly it was set to 1 as default and was divided in equal manner
+
+![Screenshot 2024-07-16 001813](https://github.com/user-attachments/assets/db653f77-5c9b-408b-9783-0e9b2a13f83d)
+
+![Screenshot 2024-07-15 192134](https://github.com/user-attachments/assets/6947c708-f723-4d5e-ab55-7890d4c5875c)
+
+![Screenshot 2024-07-15 192348](https://github.com/user-attachments/assets/f2ea4f4c-e2a0-48a3-8107-8fa933ed9a39)
+
+![Screenshot 2024-07-16 181716](https://github.com/user-attachments/assets/31b8b8f1-f309-41d3-9fa6-08ecf9bf5ea9)
+
+![Screenshot 2024-07-16 194152](https://github.com/user-attachments/assets/5054d543-7003-4ea3-8e02-e9cce96dd3d6)
+
+![Screenshot 2024-07-16 194927](https://github.com/user-attachments/assets/9329b913-6b45-4123-b364-7ce3b40e8f20)
+
+![Screenshot 2024-07-16 195418](https://github.com/user-attachments/assets/59d31ebc-bd89-4013-8269-e0eb09c6dd3b)
+
+![Screenshot 2024-07-16 195615](https://github.com/user-attachments/assets/adda1ed9-6da9-4cd8-9b69-c4432344b85d)
+
+![Screenshot 2024-07-16 225203](https://github.com/user-attachments/assets/1de2b6a2-f0a7-4b6a-bc89-5aea9e301b9f)
+
+![Screenshot 2024-07-16 231009](https://github.com/user-attachments/assets/033b68a9-4cf5-4cae-8ff7-439983b93ee6)
+
+![Screenshot 2024-07-16 231111](https://github.com/user-attachments/assets/306c388c-519a-4fdf-8eac-3883f8070b0d)
+
+![Screenshot 2024-07-16 233138](https://github.com/user-attachments/assets/14e96db8-03d6-4ac4-96c7-41273b0d757a)
+
+![Screenshot 2024-07-16 233214](https://github.com/user-attachments/assets/85b3d429-42ea-440e-afbc-df979788ee9e)
+
+![Screenshot 2024-07-16 233227](https://github.com/user-attachments/assets/41650de9-ea1b-4906-8659-43e25c7faf57)
+
+![Screenshot 2024-07-17 091937](https://github.com/user-attachments/assets/182a05f9-6d16-4f25-a028-575eee9333de)
+
+![Screenshot 2024-07-17 095021](https://github.com/user-attachments/assets/9388f158-0e98-41ec-a6bc-ccd10a4c7cea)
+
+![Screenshot 2024-07-17 095150](https://github.com/user-attachments/assets/d090f50b-7ccf-4f23-a5b5-b74b4f2dc6c5)
+
+![Screenshot 2024-07-17 104547](https://github.com/user-attachments/assets/edd49f37-cc30-4596-8ac7-619e06a5745d)
+
+![Screenshot 2024-07-17 105212](https://github.com/user-attachments/assets/21b0f1ae-70a9-4993-bf86-19a1197c186b)
+
+![Screenshot 2024-07-17 105459](https://github.com/user-attachments/assets/331e650a-4f30-4cab-8caf-8d962b496c72)
+
+![Screenshot 2024-07-17 110530](https://github.com/user-attachments/assets/cd729033-2e44-4f10-995c-7a9f6977a1a9)
+
+![Screenshot 2024-07-17 124417](https://github.com/user-attachments/assets/6bf2d0a7-693e-434a-b092-88295ad0f6b3)
+
+![Screenshot 2024-07-17 130236](https://github.com/user-attachments/assets/8e49c45b-d234-4033-ba44-726096e238cd)
+
+![Screenshot 2024-07-17 135153](https://github.com/user-attachments/assets/a0440971-ac1e-4838-908e-8a4390e9f43b)
+
+![Screenshot 2024-07-17 143612](https://github.com/user-attachments/assets/91f23027-1468-4df3-ac2e-b661069529cc)
+
+![Screenshot 2024-07-17 144434](https://github.com/user-attachments/assets/bac4b709-2488-4c92-acb4-5a133f15e817)
+
+![Screenshot 2024-07-17 172332](https://github.com/user-attachments/assets/b6058900-ca1f-4689-8b48-a3709d2a7e95)
+
+![Screenshot 2024-07-17 195920](https://github.com/user-attachments/assets/65183b20-19d5-4d3e-8825-01000945ad1d)
+
+![Screenshot 2024-07-18 113833](https://github.com/user-attachments/assets/f9244632-9f3d-44d9-b2c6-b41d46cbb32d)
+
+![Screenshot 2024-07-18 113847](https://github.com/user-attachments/assets/887ef841-b66a-4638-8d0e-553845357900)
+
+![Screenshot 2024-07-18 114938](https://github.com/user-attachments/assets/634c5b8b-6271-4415-99d1-11528bdd6afd)
+
+![Screenshot 2024-07-18 122737](https://github.com/user-attachments/assets/ce24d0bb-f922-4b79-bb88-828bd41dc038)
+
+![Screenshot 2024-07-18 122755](https://github.com/user-attachments/assets/3a05162b-1fe7-4ca7-883e-720c812e6c1f)
+
+![Screenshot 2024-07-18 124334](https://github.com/user-attachments/assets/44ebf4da-2b0c-4fb4-a9f5-e400577eb6e3)
+
+![352796869-8d6eda4d-5aa6-4d4e-ba5b-742acb3864bf](https://github.com/user-attachments/assets/a51cea16-6f9d-4235-b5fb-2d8b189edd50)
+
+![352796868-a653c05e-5740-4b73-b1b4-454cedaabeaf](https://github.com/user-attachments/assets/2e16c26b-fad9-4a84-b4ec-03841ebaec1c)
+
+
+
+
+
+
+
 
 
 
